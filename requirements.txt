@@ -1,0 +1,11 @@
+folium
+statistics
+streamlit
+pandas
+streamlit_folium
+plotly_express
+datetime
+pathlib
+geopandas
+plotly
+openpyxl
