@@ -1,5 +1,4 @@
 folium
-statistics
 streamlit
 pandas
 streamlit_folium
@@ -9,4 +8,3 @@ pathlib
 geopandas
 plotly
 openpyxl
-streamlit_gsheets

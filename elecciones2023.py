@@ -9,7 +9,7 @@ from streamlit_folium import st_folium
 import datetime  # para poder realizar el query
 import pathlib
 import geopandas as gpd
-from plotly.offline import iplot
+
 
 
 
