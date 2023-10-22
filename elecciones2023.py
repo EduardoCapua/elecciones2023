@@ -1,7 +1,7 @@
 
 
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
+
 import folium
 from folium import plugins
 import pandas as pd
@@ -10,41 +10,13 @@ import datetime  # para poder realizar el query
 import pathlib
 import geopandas as gpd
 from plotly.offline import iplot
-from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode, JsCode
-import branca
+
+
 
 # ventana y titulos
 st.set_page_config(page_title="ELECCIONES GENERALES 2023",
                    initial_sidebar_state="expanded", layout="centered")
 st.subheader(body="ELECCIONES GENERALES 2023", divider=True, anchor="50")
-
-
-# conección con google sheets
-
-#@st.cache_data
-#def load_data(url):
-#    url = "https://docs.google.com/spreadsheets/d/1zCCn_NLGqdTVzCMlq6WGBoZn19zjGMARYhjhTf__cK0/edit?usp=sharing"
-#    conn = st.experimental_connection("gsheets", type=GSheetsConnection)
-#    data = conn.read(spreadsheet=url, usecols=list(
-#        range(19)), worksheet="0", ttl=0.5)
-#    return data
-
-
-#data = load_data(
-#    "https://docs.google.com/spreadsheets/d/1zCCn_NLGqdTVzCMlq6WGBoZn19zjGMARYhjhTf__cK0/edit?usp=sharing")
-
-
-#@st.cache_data
-#def load_data(url):
-#    url = "https://docs.google.com/spreadsheets/d/1zCCn_NLGqdTVzCMlq6WGBoZn19zjGMARYhjhTf__cK0/edit?usp=sharing"
-#    conn = st.experimental_connection("gsheets", type=GSheetsConnection)
-#    data_DptoPolitico = conn.read(spreadsheet=url, usecols=list(
-#        range(9)), worksheet="2009657076", ttl=0.5)
-#    return data_DptoPolitico
-
-
-#data_DptoPolitico = load_data(
-#    "https://docs.google.com/spreadsheets/d/1zCCn_NLGqdTVzCMlq6WGBoZn19zjGMARYhjhTf__cK0/edit?usp=sharing")
 
 
 @st.cache_data
