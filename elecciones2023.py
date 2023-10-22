@@ -75,10 +75,10 @@ st.button("Rerun")
 
 # bins = list(data_DptoPolitico["MOSTRAR"].quantile([0, 0.25, 0.5, 0.75, 1]))
 
-df["MOSTRAR"] = pd.to_numeric(
-    df["MOSTRAR"], errors="coerce")
+df["PORCENTAJE"] = pd.to_numeric(
+    df["PORCENTAJE"], errors="coerce")
 
-bins = list(df["MOSTRAR"].quantile([0, 0.25, 0.50, 0.75, 1]))
+bins = list(df["PORCENTAJE"].quantile([0, 0.25, 0.50, 0.75, 1]))
 
 
 #st.dataframe(data_DptoPolitico)
@@ -95,7 +95,7 @@ with st.container():
     #folium.GeoJson(data=geo_json_sgo, name="Prov. de Sgo. del Estero",
     #               show=False).add_to(mapa_prueba)
 
-    folium.Choropleth(geo_data=geo_json_Dpto, data=df, columns=["id", "MOSTRAR"], key_on="feature.properties.id_Dpto", name="Departamento Politico",
+    folium.Choropleth(geo_data=geo_json_Dpto, data=df, columns=["id", "PORCENTAJE"], key_on="feature.properties.id_Dpto", name="Departamento Politico",
                       fill_color="BuPu", fill_opacity=0.7, line_opacity=0.5, legend_name="porcentaje de electores (%)", reset=True, show=True).add_to(mapa_prueba)
 
     folium.LayerControl().add_to(parent=mapa_prueba, name="Filtro")

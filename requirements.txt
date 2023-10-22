@@ -2,7 +2,6 @@ folium
 streamlit
 pandas
 streamlit_folium
-plotly_express
 datetime
 pathlib
 geopandas
