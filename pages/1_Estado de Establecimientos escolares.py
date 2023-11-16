@@ -6,8 +6,6 @@ import folium
 from folium import plugins
 import pandas as pd
 from streamlit_folium import st_folium
-from streamlit_folium import folium_static
-import datetime  # para poder realizar el query
 import pathlib
 import geopandas as gpd
 from streamlit_option_menu import option_menu

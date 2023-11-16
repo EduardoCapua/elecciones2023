@@ -1,12 +1,9 @@
 folium
 streamlit
-pandas
 streamlit_folium
-datetime
-pathlib
+pandas
 geopandas
 plotly
 openpyxl
 streamlit_option_menu
-streamlit_gsheets
 st-gsheets-connection

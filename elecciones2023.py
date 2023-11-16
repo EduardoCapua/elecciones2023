@@ -48,7 +48,6 @@ if selected == "ESCUELAS HABILITADAS":
 if selected == "MESAS HABILITADAS":
     st.title(f"{selected}")
 
-    
 
 if selected == "% DE VOTANTES":
     st.title(f"{selected}")
