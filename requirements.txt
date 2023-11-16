@@ -8,5 +8,4 @@ geopandas
 plotly
 openpyxl
 streamlit_option_menu
-streamlit_gsheets==0.0.1
 st-gsheets-connection
