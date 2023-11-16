@@ -11,7 +11,7 @@ import datetime  # para poder realizar el query
 import pathlib
 import geopandas as gpd
 from streamlit_option_menu import option_menu
-from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode, JsCode
+
 from streamlit_gsheets import GSheetsConnection
 
 
