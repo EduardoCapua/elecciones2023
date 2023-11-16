@@ -1,3 +1,6 @@
+# Estas son declaraciones de importación en Python que importan varias bibliotecas y módulos. Aquí hay
+# un desglose de lo que hace cada declaración de importación:
+
 import streamlit as st
 import folium
 from folium import plugins
@@ -11,19 +14,24 @@ from streamlit_option_menu import option_menu
 from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode, JsCode
 from streamlit_gsheets import GSheetsConnection
 
+
 # ventana y titulos
-st.set_page_config(page_title="PORCENTAJE ESTABLECIMIENTOS ESCOLARES",
-                   initial_sidebar_state="expanded", layout="centered")
+st.set_page_config(page_title = "PORCENTAJE ESTABLECIMIENTOS ESCOLARES",
+                   initial_sidebar_state = "expanded", layout = "wide")
 st.markdown(" ## PORCENTAJE ESTABLECIMIENTOS ESCOLARES ")
 
 
 
 
 
-# conección con google sheets
+# conexión con google sheets
+
+# El código `conn = st.connection("gsheets", type=GSheetsConnection)` establece una conexión a un
+# documento de Google Sheets utilizando el complemento `gsheets` en Streamlit. El parámetro
+# `type=GSheetsConnection` especifica el tipo de conexión que se realizará.
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-data = conn.read(worksheet="escuelas (estado)",usecols=list(range(5)), ttl=1)
+estado_establecimiento = conn.read(worksheet="escuelas (estado)",usecols=list(range(5)), nrows = 18, ttl=1)
 
 
 
@@ -110,7 +118,7 @@ def streamlit_menu(example=1):
         )
         return selected
 
- 
+
 
 selected = streamlit_menu(example=EXAMPLE_NO)
 
@@ -120,9 +128,9 @@ if selected == "ESCUELAS HABILITADAS":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.dataframe(data)
+        st.dataframe(data = estado_establecimiento, width = 500)
     with col2:
-        st.area_chart(data)
+        st.bar_chart(estado_establecimiento)
 
 if selected == "MESAS HABILITADAS":
     st.title(f"{selected}")
