@@ -16,7 +16,7 @@ from streamlit_gsheets import GSheetsConnection
 # ventana y titulos
 st.set_page_config(page_title = "PORCENTAJE ESTABLECIMIENTOS ESCOLARES",
                    initial_sidebar_state = "expanded", layout = "wide")
-st.markdown(" ## PORCENTAJE ESTABLECIMIENTOS ESCOLARES ")
+st.markdown(" ## ESTADO DE ESTABLECIMIENTOS ESCOLARES ")
 
 
 
