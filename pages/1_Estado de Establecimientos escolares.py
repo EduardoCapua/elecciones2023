@@ -9,7 +9,6 @@ from streamlit_folium import st_folium
 import pathlib
 import geopandas as gpd
 from streamlit_option_menu import option_menu
-
 from streamlit_gsheets import GSheetsConnection
 
 
@@ -29,15 +28,16 @@ st.markdown(" ## ESTADO DE ESTABLECIMIENTOS ESCOLARES ")
 # `type=GSheetsConnection` especifica el tipo de conexión que se realizará.
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-estado_establecimiento = conn.read(worksheet="escuelas (estado)",usecols=list(range(5)), nrows = 18, ttl=1)
 
+estado_establecimiento = conn.read(worksheet="escuelas (estado)",usecols=list(range(5)), nrows = 19, ttl=1)
+mesa_establecimiento = conn.read(worksheet="escuelas (mesas)",usecols=list(range(5)), nrows = 19, ttl=1)
 
 
 @st.cache_data
 def load_data(url):
     # lectura del archivo y carga de datos
     geo_json_centroide = pathlib.Path() / "centroides_dpto.geojson"
-    assert geo_json_centroide .exists()
+    assert geo_json_centroide.exists()
     geo_json_centroide  = gpd.read_file(geo_json_centroide)
     return geo_json_centroide 
 
@@ -136,86 +136,9 @@ if selected == "MESAS HABILITADAS":
     
 if selected == "% DE VOTANTES":
     st.title(f"{selected}")
-        
-    df["PORCENTAJE"] = pd.to_numeric(
-    df["PORCENTAJE"], errors="coerce")
-
-    bins = list(df["PORCENTAJE"].quantile([0, 0.25, 0.50, 0.75, 1]))
 
 
-    with st.container():
-        
-        st.title("MAPA INTERACTIVO")
-        
-        mapa_prueba = folium.Map(tiles=None, zoom_control= False)
 
-        
-        choropleth=folium.Choropleth(
-                        geo_data=geo_json_Dpto,
-                        data=df,
-                        columns=["id", "PORCENTAJE"],
-                        key_on="feature.properties.id", name="Departamento Politico",
-                        fill_color="BuPu",
-                        fill_opacity=0.7,
-                        nan_fill_color= "black",
-                        line_opacity=0.5, legend_name="porcentaje de electores (%)",
-                        reset=True,
-                        show=True,
-                        
-                        )
-        choropleth.add_to(mapa_prueba)
-        
-        tooltip = folium.GeoJsonTooltip(
-        fields=["id", "name"],
-        aliases=["id:", "nombre:"],
-        localize=False,
-        sticky=True,
-        labels=True,
-        style="""
-            background-color: #00000000;
-            border: 2px solid black;
-            border-radius: 3px;
-            box-shadow: 3px;
-        """,
-        max_width=800,
-        )
-        
-        centroides = folium.GeoJson(data=geo_json_Dpto,
-                                    name="centroides",
-                                    zoom_on_click=True,
-                                    tooltip=tooltip,
-                                    )
-        centroides.add_to(mapa_prueba)
-            
-        
-        filtro=folium.LayerControl(position="topleft")
-        filtro.add_to(
-                    parent=mapa_prueba,
-                    name="Filtro",
-                    
-                    )
-
-        agrandar_mapa=plugins.Fullscreen(
-                        position="topleft",
-                        title="Ampliar",
-                        title_cancel="Salir",
-                        force_separate_button=True,
-                        )
-        agrandar_mapa.add_to(mapa_prueba)
-
-        
-        herramienta_busqueda=plugins.Search(layer=centroides, search_label="name", geom_type="Polygon",collapsed=True)
-        herramienta_busqueda.add_to(mapa_prueba)
-        
-        
-        
-        #mostrar el mapa
-        st_folium(
-                mapa_prueba,
-                use_container_width=any,
-                center=[-27.807300, -63.232700],
-                zoom=7,
-                )    
 ## MENU HORIZONTAL
 
 
