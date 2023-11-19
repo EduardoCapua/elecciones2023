@@ -38,9 +38,16 @@ def load_data(url):
     geo_json_circuito = gpd.read_file(geo_json_circuito)
     return geo_json_circuito
 
-
 geo_json_circuito = load_data("Circuitos.geojson")
 
+@st.cache_data
+def load_data(url):
+    # lectura del archivo y carga de datos
+    geo_json_establecimientos = pathlib.Path() / "ESTABLECIMINETOS ESCOLARES.geojson"
+    assert geo_json_establecimientos.exists()
+    geo_json_establecimientos = gpd.read_file(geo_json_establecimientos)
+    return geo_json_establecimientos
+geo_json_establecimientos = load_data("ESTABLECIMINETOS ESCOLARES.geojson")
 
 @st.cache_data
 def load_data(url):
@@ -148,17 +155,16 @@ if selected == "MAPA":
                                     zoom_on_click=True,
                                     tooltip=tooltip,
                                     style_function=lambda feature: {
-                                     "fillColor": "#ffff00",
-                                     "color": "black",
-                                     "weight": 2,
-                                     "dashArray": "5, 5",
-                                     },
-                                     highlight_function=lambda feature: {
+                                    "fillColor": "#ffff00",
+                                    "color": "black",
+                                    "weight": 2,
+                                    "dashArray": "5, 5",
+                                    },
+                                    highlight_function=lambda feature: {
                                     "fillColor": (
                                     "green" if "e" in feature["properties"]["fna"].lower() else "#ffff00"
                                     ),
                                     },
-                                     
                                     )
         
         #Departamentos_politicos.add_child(folium.Popup("hola"))
@@ -169,28 +175,54 @@ if selected == "MAPA":
                                     zoom_on_click=True,
                                     show=False,
                                     style_function=lambda feature: {
-                                     "fillColor": "#ff3300",
-                                     "color": "black",
-                                     "weight": 2,
-                                     "dashArray": "3, 3",
-                                     },
-                                     highlight_function=lambda feature: {
+                                    "fillColor": "#ff3300",
+                                    "color": "black",
+                                    "weight": 2,
+                                    "dashArray": "3, 3",
+                                    },
+                                    highlight_function=lambda feature: {
                                     "fillColor": (
                                     "green" if "e" in feature["properties"]["circuito"].lower() else "#00ffff"
                                     ),
                                     },
-                                     
                                     )
         #Departamentos_politicos.add_child(folium.Popup("hola"))
         Circuitos_politicos.add_to(mapa_guia)
         
+        def style_function(feature):
+                        props = feature.get('properties')
+                        markup = f"""
+                        <a href="{props.get('url')}">
+                        <div style="font-size: 0.8em;">
+                        <div style="width: 10px;
+                        height: 10px;
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        background-color: orange;">
+                        </div>
+                        </a>
+                        """
+                        return {"html": markup}
+
+
+        establecimiento_escolar = folium.GeoJson(
+        geo_json_establecimientos,
+        name="establecimientos escolares",
+        marker=folium.Marker(icon=folium.DivIcon()),
+        tooltip=folium.GeoJsonTooltip(fields=["name", "CIRCUITO", "FUNCIONARIO"]),
+        popup=folium.GeoJsonPopup(fields=["name", "CIRCUITO", "FUNCIONARIO"]),
+        style_function=style_function,
+        zoom_on_click=True,
+        show=True
+        )
+        establecimiento_escolar.add_to(mapa_guia)
         
         filtro=folium.LayerControl(position="topleft")
         filtro.add_to(
                     parent=mapa_guia,
                     name="Filtro",
                     
-                    )
+        )
 
         agrandar_mapa=plugins.Fullscreen(
                         position="topleft",
@@ -201,7 +233,7 @@ if selected == "MAPA":
         agrandar_mapa.add_to(mapa_guia)
 
         
-        herramienta_busqueda=plugins.Search(layer=Departamentos_politicos, search_label="name", geom_type="Polygon",collapsed=True)
+        herramienta_busqueda=plugins.Search(layer=establecimiento_escolar, search_label="name", geom_type="Point",collapsed=True)
         herramienta_busqueda.add_to(mapa_guia)
         
         

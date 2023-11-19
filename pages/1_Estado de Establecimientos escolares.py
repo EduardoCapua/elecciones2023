@@ -72,7 +72,7 @@ selected = streamlit_menu(example=EXAMPLE_NO)
 if selected == "ESCUELAS HABILITADAS":
     st.title(f"{selected}")
     
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([2,1])
 
     with col1:
 

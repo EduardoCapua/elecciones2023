@@ -73,6 +73,11 @@ if selected == "1° ETAPA":
     porcentaje_16 = porcentaje_establecimiento.loc[18,"16:00 HS"]
     porcentaje_18 = porcentaje_establecimiento.loc[18,"18:00 HS"]
 
+    porcentaje_10 = ("{:.2%}".format(porcentaje_10))
+    porcentaje_12 = ("{:.2%}".format(porcentaje_12))
+    porcentaje_14 = ("{:.2%}".format(porcentaje_14))
+    porcentaje_16 = ("{:.2%}".format(porcentaje_16))
+    porcentaje_18 = ("{:.2%}".format(porcentaje_18))
     
     st.divider()
 
