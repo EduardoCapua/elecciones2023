@@ -7,3 +7,4 @@ plotly
 openpyxl
 streamlit_option_menu
 st-gsheets-connection
+AgGrid
