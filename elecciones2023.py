@@ -66,12 +66,14 @@ if selected == "1° ETAPA":
     mesas_no_habilitada = mesa_establecimiento.loc[18,"MESAS NO HABILITADAS"]
 
     #datos de la hoja de escuelas (porcentajes)
+
     porcentaje_10 = porcentaje_establecimiento.loc[18,"10:00 HS"]
     porcentaje_12 = porcentaje_establecimiento.loc[18,"12:00 HS"]
     porcentaje_14 = porcentaje_establecimiento.loc[18,"14:00 HS"]
     porcentaje_16 = porcentaje_establecimiento.loc[18,"16:00 HS"]
     porcentaje_18 = porcentaje_establecimiento.loc[18,"18:00 HS"]
 
+    
     st.divider()
 
     with st.container():

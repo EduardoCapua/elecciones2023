@@ -9,8 +9,6 @@ from streamlit_folium import st_folium
 import pathlib
 import geopandas as gpd
 from streamlit_option_menu import option_menu
-from streamlit_gsheets import GSheetsConnection
-
 
 
 st.set_page_config(page_title="GUIA TELEFONICA",
@@ -18,16 +16,6 @@ st.set_page_config(page_title="GUIA TELEFONICA",
 
 
 st.markdown(" # GUIA TELEFONICA ")
-
-# conexión con google sheets
-
-# El código `conn = st.connection("gsheets", type=GSheetsConnection)` establece una conexión a un
-# documento de Google Sheets utilizando el complemento `gsheets` en Streamlit. El parámetro
-# `type=GSheetsConnection` especifica el tipo de conexión que se realizará.
-
-conn = st.connection("gsheets", type=GSheetsConnection)
-estado_establecimiento = conn.read(worksheet="escuelas (estado)",usecols=list(range(5)), nrows = 18, ttl=1)
-
 
 
 @st.cache_data
@@ -62,22 +50,24 @@ def load_data(url):
     geo_json_Dpto = gpd.read_file(geo_json_Dpto)
     return geo_json_Dpto
 
-
-
-
-
 geo_json_Dpto = load_data("Departamentos Politicos.geojson")
 
 
 
-#@st.cache_data 
-#def load_data(url):
-#lectura del archivo y carga de datos
-df = pd.read_excel("dpto politico.xlsx")
-df = df.sort_values(by=["id"],ascending=[True])
-  # return df
+@st.cache_data 
+def load_data(url):
+    df = pd.read_excel("dpto politico.xlsx")
+    df = df.sort_values(by=["id"],ascending=[True])
+    return df
 
-#df = load_data("dpto politico.xlsx")
+df = load_data("dpto politico.xlsx")
+
+@st.cache_data 
+def load_data(url):
+    listado_establecimientos = pd.read_excel("LISTADO DE ESCUELAS.xlsx")
+    return listado_establecimientos
+listado_establecimientos = load_data("LISTADO DE ESCUELAS.xlsx")
+
 
 st.button("Rerun")
 
@@ -123,9 +113,9 @@ if selected == "LISTADO DE TELEFONOS":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.dataframe(data = estado_establecimiento, width = 500)
+       st.write("agregar algo")
     with col2:
-        st.bar_chart(estado_establecimiento)
+       st.write("agregar algo") 
 
     
 if selected == "MAPA":
@@ -134,7 +124,7 @@ if selected == "MAPA":
     with st.container():
         
         mapa_guia = folium.Map(tiles=None, zoom_control= False)
-
+        folium.TileLayer(name="OpenStreetMap",tiles="OpenStreetMap").add_to(mapa_guia)
         tooltip = folium.GeoJsonTooltip(
         fields=["id", "name"],
         aliases=["id:", "nombre:"],
@@ -150,11 +140,25 @@ if selected == "MAPA":
         max_width=800,
         )
         
+            
         
+                
         Departamentos_politicos = folium.GeoJson(data=geo_json_Dpto,
                                     name="Departamentos politicos",
                                     zoom_on_click=True,
                                     tooltip=tooltip,
+                                    style_function=lambda feature: {
+                                     "fillColor": "#ffff00",
+                                     "color": "black",
+                                     "weight": 2,
+                                     "dashArray": "5, 5",
+                                     },
+                                     highlight_function=lambda feature: {
+                                    "fillColor": (
+                                    "green" if "e" in feature["properties"]["fna"].lower() else "#ffff00"
+                                    ),
+                                    },
+                                     
                                     )
         
         #Departamentos_politicos.add_child(folium.Popup("hola"))
@@ -163,7 +167,19 @@ if selected == "MAPA":
         Circuitos_politicos = folium.GeoJson(data=geo_json_circuito,
                                     name="Circuitos",
                                     zoom_on_click=True,
-                                    show=False
+                                    show=False,
+                                    style_function=lambda feature: {
+                                     "fillColor": "#ff3300",
+                                     "color": "black",
+                                     "weight": 2,
+                                     "dashArray": "3, 3",
+                                     },
+                                     highlight_function=lambda feature: {
+                                    "fillColor": (
+                                    "green" if "e" in feature["properties"]["circuito"].lower() else "#00ffff"
+                                    ),
+                                    },
+                                     
                                     )
         #Departamentos_politicos.add_child(folium.Popup("hola"))
         Circuitos_politicos.add_to(mapa_guia)

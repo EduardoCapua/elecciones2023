@@ -10,7 +10,7 @@ import pathlib
 import geopandas as gpd
 from streamlit_option_menu import option_menu
 from streamlit_gsheets import GSheetsConnection
-
+from st_aggrid import AgGrid
 
 # ventana y titulos
 st.set_page_config(page_title = "PORCENTAJE ESTABLECIMIENTOS ESCOLARES",
@@ -33,62 +33,11 @@ estado_establecimiento = conn.read(worksheet="escuelas (estado)",usecols=list(ra
 mesa_establecimiento = conn.read(worksheet="escuelas (mesas)",usecols=list(range(5)), nrows = 19, ttl=1)
 
 
-@st.cache_data
-def load_data(url):
-    # lectura del archivo y carga de datos
-    geo_json_centroide = pathlib.Path() / "centroides_dpto.geojson"
-    assert geo_json_centroide.exists()
-    geo_json_centroide  = gpd.read_file(geo_json_centroide)
-    return geo_json_centroide 
-
-
-geo_json_centroide  = load_data("Santiago del Estero.geojson")
-
-
-@st.cache_data
-def load_data(url):
-    # lectura del archivo y carga de datos
-    geo_json_circuito = pathlib.Path() / "Circuitos.geojson"
-    assert geo_json_circuito.exists()
-    geo_json_circuito = gpd.read_file(geo_json_circuito)
-    return geo_json_circuito
-
-
-geo_json_circuito = load_data("Circuitos.geojson")
-
-
-@st.cache_data
-def load_data(url):
-    # lectura del archivo y carga de datos
-    geo_json_Dpto = pathlib.Path() / "Departamentos Politicos.geojson"
-    assert geo_json_Dpto.exists()
-    geo_json_Dpto = gpd.read_file(geo_json_Dpto)
-    return geo_json_Dpto
-
-
-
-
-
-geo_json_Dpto = load_data("Departamentos Politicos.geojson")
-
-
-
-#@st.cache_data 
-#def load_data(url):
-#lectura del archivo y carga de datos
-df = pd.read_excel("dpto politico.xlsx")
-df = df.sort_values(by=["id"],ascending=[True])
-  # return df
-
-#df = load_data("dpto politico.xlsx")
-
-st.button("Rerun")
 
 
 
 
 #MENU HORIZONTAL
-
 
 EXAMPLE_NO = 2
 # 1=sidebar menu, 2=horizontal menu, 3=horizontal menu w/ custom menu
@@ -126,9 +75,11 @@ if selected == "ESCUELAS HABILITADAS":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.dataframe(data = estado_establecimiento, width = 500)
+
+        AgGrid(estado_establecimiento)
+        
     with col2:
-        st.bar_chart(estado_establecimiento)
+        st.write("escribir algo")
 
 if selected == "MESAS HABILITADAS":
     st.title(f"{selected}")
