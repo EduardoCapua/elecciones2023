@@ -132,6 +132,10 @@ if selected == "MAPA":
         
         mapa_guia = folium.Map(tiles=None, zoom_control= False)
         folium.TileLayer(name="OpenStreetMap",tiles="OpenStreetMap").add_to(mapa_guia)
+        
+        
+    
+        
         tooltip = folium.GeoJsonTooltip(
         fields=["id", "name"],
         aliases=["id:", "nombre:"],
@@ -147,9 +151,6 @@ if selected == "MAPA":
         max_width=800,
         )
         
-            
-        
-                
         Departamentos_politicos = folium.GeoJson(data=geo_json_Dpto,
                                     name="Departamentos politicos",
                                     zoom_on_click=True,
@@ -167,7 +168,7 @@ if selected == "MAPA":
                                     },
                                     )
         
-        #Departamentos_politicos.add_child(folium.Popup("hola"))
+        
         Departamentos_politicos.add_to(mapa_guia)
         
         Circuitos_politicos = folium.GeoJson(data=geo_json_circuito,
@@ -186,31 +187,28 @@ if selected == "MAPA":
                                     ),
                                     },
                                     )
-        #Departamentos_politicos.add_child(folium.Popup("hola"))
         Circuitos_politicos.add_to(mapa_guia)
         
         def style_function(feature):
-                        props = feature.get('properties')
-                        markup = f"""
-                        <a href="{props.get('url')}">
-                        <div style="font-size: 0.8em;">
-                        <div style="width: 10px;
-                        height: 10px;
-                        border: 1px solid black;
-                        border-radius: 5px;
-                        background-color: orange;">
-                        </div>
-                        </a>
-                        """
-                        return {"html": markup}
+            props = feature.get('properties')
+            markup = f"""
+                <div style="font-size: 0.8em;">
+                <div style="width: 10px;
+                height: 10px;
+                border: 1px solid black;
+                border-radius: 5px;
+                background-color: orange;">
+                </div>
+            """
+            return {"html": markup}
 
 
         establecimiento_escolar = folium.GeoJson(
-        geo_json_establecimientos,
+        data=geo_json_establecimientos,
         name="establecimientos escolares",
         marker=folium.Marker(icon=folium.DivIcon()),
-        tooltip=folium.GeoJsonTooltip(fields=["name", "CIRCUITO", "FUNCIONARIO"]),
-        popup=folium.GeoJsonPopup(fields=["name", "CIRCUITO", "FUNCIONARIO"]),
+        tooltip=folium.GeoJsonTooltip(fields=["name", "FUNCIONARIO"]),
+        popup=folium.GeoJsonPopup(fields=["name", "FUNCIONARIO"]),
         style_function=style_function,
         zoom_on_click=True,
         show=True
@@ -233,7 +231,7 @@ if selected == "MAPA":
         agrandar_mapa.add_to(mapa_guia)
 
         
-        herramienta_busqueda=plugins.Search(layer=establecimiento_escolar, search_label="name", geom_type="Point",collapsed=True)
+        herramienta_busqueda=plugins.Search(layer=establecimiento_escolar, search_label="name", geom_type="Point",collapsed=True, search_zoom=13)
         herramienta_busqueda.add_to(mapa_guia)
         
         
